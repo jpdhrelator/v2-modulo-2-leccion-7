@@ -18,6 +18,8 @@
     --warning: #b8860b;
     --code-bg: #2d2a26;
     --code-text: #f4f1ec;
+    --code-comment: #a89c8a;
+    --code-keyword: #f8c471;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -137,6 +139,35 @@
     border-radius: 4px;
     font-size: 13px;
   }
+  pre.cmd {
+    margin-top: 14px;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  pre.cmd::before {
+    content: "Comandos sugeridos";
+    display: block;
+    color: var(--code-keyword);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  pre.cmd .c { color: var(--code-comment); font-style: italic; }
+  pre.cmd code {
+    background: transparent;
+    padding: 0;
+    color: var(--code-text);
+    font-size: 13px;
+  }
   .hint {
     margin-top: 14px;
     font-size: 13px;
@@ -144,48 +175,6 @@
     font-style: italic;
   }
   .hint::before { content: "Pista: "; font-weight: 700; color: var(--warning); font-style: normal; }
-  .deliverable {
-    margin-top: 50px;
-    background: var(--surface);
-    border: 2px dashed var(--accent);
-    border-radius: 10px;
-    padding: 26px 28px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .deliverable h2 {
-    font-family: Georgia, serif;
-    color: var(--accent);
-    font-size: 22px;
-    margin-bottom: 14px;
-  }
-  .deliverable ol { padding-left: 22px; }
-  .deliverable li { margin: 8px 0; }
-  .rubric {
-    margin-top: 36px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--surface);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .rubric h2 {
-    background: var(--surface-2);
-    padding: 16px 20px;
-    font-size: 14px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  table { width: 100%; border-collapse: collapse; }
-  th, td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
-  th { background: var(--surface-2); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
-  td { color: var(--text); }
-  td:last-child { text-align: center; color: var(--accent); font-weight: 700; }
   footer {
     margin-top: 50px;
     padding-top: 24px;
@@ -202,7 +191,7 @@
   <header>
     <span class="tag">Módulo 2 — Lección 07 — Actividad en clases</span>
     <h1>Versiona tu primer Portafolio con Git (local)</h1>
-    <p>Vas a llevar un proyecto desde su primera línea de código hasta dejar un historial limpio, con ramas, etiquetas y resolución de conflictos. Todo ocurre en tu máquina, sin conexión a ningún repositorio remoto. No te entregaremos comandos: solo el qué; el cómo lo aprendiste en clases y está en la PPT y tus apuntes.</p>
+    <p>Vas a llevar un proyecto desde su primera línea de código hasta dejar un historial limpio, con ramas, etiquetas y resolución de conflictos. Todo ocurre en tu máquina, sin conexión a ningún repositorio remoto.</p>
   </header>
 
   <div class="context">
@@ -220,7 +209,6 @@
         <li>Etiquetado de versiones (tags)</li>
         <li>Uso de stash para cambios temporales</li>
         <li>Rebase para mantener el historial lineal</li>
-        <li>Documentación en Markdown</li>
       </ul>
     </div>
   </div>
@@ -230,6 +218,19 @@
     <div class="mission-body">
       <p>Verifica que Git está instalado en tu equipo y que tu identidad de usuario está configurada de forma global con tu nombre real y un correo. Comprueba que la configuración quedó correctamente registrada.</p>
       <p>Crea desde el terminal una carpeta llamada <code>mi-portafolio</code> dentro de tu directorio personal y entra en ella. Dentro, crea los siguientes archivos vacíos: <code>index.html</code>, <code>estilos.css</code>, <code>script.js</code> y <code>notas.txt</code>.</p>
+<pre class="cmd"><span class="c"># Verificar Git</span>
+git --version
+
+<span class="c"># Configurar identidad</span>
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu@correo.com"
+git config --list
+
+<span class="c"># Crear carpeta y archivos</span>
+mkdir mi-portafolio
+cd mi-portafolio
+touch index.html estilos.css script.js notas.txt
+ls</pre>
       <div class="check"><strong>Verificación:</strong> al listar el contenido del directorio deben aparecer los cuatro archivos y al ejecutar la consulta de versión de Git debe responderte con un número de versión.</div>
     </div>
   </section>
@@ -240,6 +241,13 @@
       <p>Inicializa el repositorio de Git dentro de <code>mi-portafolio</code>. Antes de hacer cualquier otra cosa, consulta el estado del repositorio y observa qué archivos aparecen y en qué color.</p>
       <p>Agrega <strong>todos</strong> los archivos al área de preparación y realiza tu primer commit con un mensaje claro que diga: <em>"Estructura inicial del portafolio"</em>.</p>
       <p>Consulta nuevamente el estado y luego el historial de commits.</p>
+<pre class="cmd">git init
+git status
+git add --all
+git status
+git commit -m "Estructura inicial del portafolio"
+git status
+git log</pre>
       <div class="check"><strong>Verificación:</strong> el historial debe mostrar exactamente un commit, y el estado del repositorio debe estar limpio.</div>
     </div>
   </section>
@@ -254,6 +262,18 @@
         <li>En <code>script.js</code> deja un <code>console.log</code> con un saludo.</li>
       </ul>
       <p>Realiza <strong>tres commits independientes</strong>, uno por cada archivo modificado, cada uno con su propio mensaje descriptivo. Al final, revisa el historial en formato resumido de una sola línea por commit.</p>
+<pre class="cmd"><span class="c"># Edita los archivos con tu editor, luego:</span>
+
+git add index.html
+git commit -m "Agrega estructura HTML con titulo"
+
+git add estilos.css
+git commit -m "Agrega estilos base al body"
+
+git add script.js
+git commit -m "Agrega saludo en consola"
+
+git log --oneline</pre>
       <div class="check"><strong>Verificación:</strong> el historial debe mostrar cuatro commits en total. Cada mensaje debe describir lo que se cambió.</div>
     </div>
   </section>
@@ -263,6 +283,9 @@
     <div class="mission-body">
       <p>El archivo <code>notas.txt</code> debe llamarse <code>TODO.md</code>. Usa el comando de Git apropiado para que el cambio de nombre quede registrado como un renombre y no como una eliminación más una creación.</p>
       <p>Confirma el cambio con un commit cuyo mensaje describa la operación.</p>
+<pre class="cmd">git mv notas.txt TODO.md
+git status
+git commit -m "Renombra notas.txt a TODO.md"</pre>
       <div class="check"><strong>Verificación:</strong> al revisar el estado antes del commit, Git debe identificar la operación como <em>renamed</em>. El historial del archivo debe seguir vivo bajo el nuevo nombre.</div>
     </div>
   </section>
@@ -273,6 +296,22 @@
       <p>Crea dentro del proyecto un archivo de configuración local llamado <code>config.local</code> (con cualquier contenido inventado) y una carpeta <code>cache/</code> con un archivo dummy dentro.</p>
       <p>Estos artefactos no deben formar parte nunca del historial del proyecto. Configura tu repositorio para que Git los ignore por completo. Si ya hubieran entrado al historial por error, asegúrate de que Git los olvide.</p>
       <p>Realiza un commit con el archivo de exclusión.</p>
+<pre class="cmd"><span class="c"># Crear archivos que NO queremos versionar</span>
+echo "API_KEY=12345" &gt; config.local
+mkdir cache
+touch cache/dummy.tmp
+
+<span class="c"># Crear .gitignore</span>
+echo "config.local"  &gt;&gt; .gitignore
+echo "cache/"        &gt;&gt; .gitignore
+
+<span class="c"># Si por error ya estaban rastreados, sacarlos del index</span>
+git rm --cached config.local 2&gt;/dev/null
+git rm --cached -r cache 2&gt;/dev/null
+
+git add .gitignore
+git commit -m "Agrega .gitignore para archivos locales y cache"
+git status</pre>
       <div class="check"><strong>Verificación:</strong> tras la configuración, el estado del repositorio debe estar limpio aunque modifiques <code>config.local</code> o agregues nuevos archivos a <code>cache/</code>.</div>
     </div>
   </section>
@@ -282,6 +321,17 @@
     <div class="mission-body">
       <p>Crea una rama nueva llamada <code>feature/seccion-contacto</code> y posiciónate en ella. En esa rama, crea un nuevo archivo <code>contacto.html</code> con un formulario básico (al menos un <code>input</code> de email y un botón). Realiza el commit correspondiente.</p>
       <p>Cambia de regreso a la rama principal y verifica que el archivo <code>contacto.html</code> <strong>no</strong> está presente. Vuelve a la rama de la feature y comprueba que sí está.</p>
+<pre class="cmd">git branch
+git checkout -b feature/seccion-contacto
+
+<span class="c"># Crear contacto.html con un formulario y guardarlo</span>
+git add contacto.html
+git commit -m "Agrega seccion de contacto"
+
+git checkout main
+ls          <span class="c"># contacto.html NO aparece</span>
+git checkout feature/seccion-contacto
+ls          <span class="c"># contacto.html SI aparece</span></pre>
       <div class="check"><strong>Verificación:</strong> al cambiar entre ramas, el archivo aparece y desaparece según corresponda.</div>
     </div>
   </section>
@@ -293,6 +343,23 @@
       <p>Cambia a la rama <code>feature/seccion-contacto</code> y modifica la <strong>misma línea</strong> del <code>&lt;h1&gt;</code> para que diga <em>"Portafolio de [tu nombre] — versión creativa"</em>. Commitea.</p>
       <p>Vuelve a la rama principal e intenta fusionar la rama de feature. Cuando Git te avise del conflicto, ábrelo, decide manualmente el contenido final (deja una versión que combine ambas ideas, por ejemplo <em>"Portafolio profesional y creativo"</em>) y completa la fusión.</p>
       <p>Cuando todo esté limpio, elimina la rama <code>feature/seccion-contacto</code>.</p>
+<pre class="cmd">git checkout main
+<span class="c"># Editar &lt;h1&gt; a "versión profesional"</span>
+git commit -am "Cambia h1 a version profesional"
+
+git checkout feature/seccion-contacto
+<span class="c"># Editar la MISMA linea del h1 a "versión creativa"</span>
+git commit -am "Cambia h1 a version creativa"
+
+git checkout main
+git merge feature/seccion-contacto
+<span class="c"># Git avisa: CONFLICT. Abrir index.html, editar la linea final</span>
+<span class="c"># dejando "Portafolio profesional y creativo" y borrar los marcadores &lt;&lt;&lt; === &gt;&gt;&gt;</span>
+git add index.html
+git commit -m "Resuelve conflicto: fusiona versiones del h1"
+
+git log --oneline --graph --all
+git branch -d feature/seccion-contacto</pre>
       <div class="check"><strong>Verificación:</strong> el historial visualizado en modo gráfico debe mostrar el commit de fusión uniendo ambas ramas, y la rama de feature ya no debe existir.</div>
     </div>
   </section>
@@ -302,6 +369,16 @@
     <div class="mission-body">
       <p>Tu cliente quiere ver cómo se veía <code>index.html</code> en su versión más antigua, pero sin perder el trabajo actual. Consulta el historial en formato resumido, identifica el hash del primer commit, y restaura <strong>solo</strong> el archivo <code>index.html</code> a esa versión inicial.</p>
       <p>Confirma el cambio con un commit que indique la restauración. Verifica que el resto de los archivos (CSS, JS, etc.) siguen en su versión actual.</p>
+<pre class="cmd">git log --oneline
+<span class="c"># Anotar el hash del PRIMER commit, por ejemplo: a1b2c3d</span>
+
+git checkout a1b2c3d -- index.html
+cat index.html       <span class="c"># muestra la version inicial</span>
+
+git status
+git add index.html
+git commit -m "Restaura index.html a la primera version"
+git log --oneline</pre>
       <div class="check"><strong>Verificación:</strong> el contenido de <code>index.html</code> es el del primer commit y el historial del proyecto no se ha reescrito (todos los commits anteriores siguen ahí más el nuevo).</div>
     </div>
   </section>
@@ -312,6 +389,11 @@
       <p>Tu portafolio acaba de alcanzar su primera versión estable. Marca el commit actual con una etiqueta <strong>anotada</strong> llamada <code>v1.0</code> y un mensaje que diga <em>"Primera versión estable del portafolio"</em>.</p>
       <p>Crea también una etiqueta ligera <code>v1.0-demo</code> sobre el mismo commit para diferenciar el uso de ambos tipos.</p>
       <p>Consulta el detalle de la etiqueta anotada y verifica que aparezcan autor, fecha y mensaje.</p>
+<pre class="cmd">git tag -a v1.0 -m "Primera version estable del portafolio"
+git tag v1.0-demo
+
+git tag
+git show v1.0</pre>
       <div class="check"><strong>Verificación:</strong> al listar las etiquetas deben aparecer ambas, y el detalle de la anotada debe mostrar autor, fecha y mensaje.</div>
     </div>
   </section>
@@ -322,6 +404,24 @@
       <p>Empieza a editar <code>estilos.css</code> agregando estilos para un futuro menú de navegación, pero <strong>no</strong> hagas commit. Comprueba que el archivo aparece como modificado.</p>
       <p>De pronto, te avisan de un bug urgente: en <code>script.js</code> el <code>console.log</code> tiene un error tipográfico. Guarda tu trabajo en curso de los estilos en un "cajón temporal" para que tu directorio quede limpio, corrige el <code>console.log</code>, commitea esa corrección, y luego recupera tu trabajo de estilos para seguir donde lo dejaste.</p>
       <p>Cuando termines los estilos, commitea normalmente.</p>
+<pre class="cmd"><span class="c"># Editar estilos.css agregando estilos del menu (sin commit)</span>
+git status
+
+git stash
+git status           <span class="c"># working tree clean</span>
+
+<span class="c"># Corregir el typo en script.js</span>
+git add script.js
+git commit -m "Fix: corrige typo en console.log"
+
+git stash pop
+git status           <span class="c"># vuelve la modificacion de estilos.css</span>
+
+<span class="c"># Terminar los estilos del menu</span>
+git add estilos.css
+git commit -m "Agrega estilos para menu de navegacion"
+
+git stash list       <span class="c"># debe estar vacio</span></pre>
       <div class="check"><strong>Verificación:</strong> el listado del cajón temporal debe quedar vacío al final, y el historial debe contener tanto la corrección del bug como la nueva versión de los estilos.</div>
     </div>
   </section>
@@ -333,55 +433,28 @@
       <p>Cambia a la rama principal y realiza un commit independiente: agrega en <code>TODO.md</code> una lista con dos próximas tareas que harías al portafolio.</p>
       <p>Vuelve a la rama <code>feature/footer</code> y, en lugar de fusionar con merge, <strong>reorganiza sus commits</strong> para que queden colocados encima del último commit de la rama principal, dejando un historial lineal sin commit de merge.</p>
       <p>Cuando termines, fusiona <code>feature/footer</code> en la rama principal y revisa el historial gráfico.</p>
+<pre class="cmd">git checkout -b feature/footer
+<span class="c"># Agregar &lt;footer&gt; en index.html</span>
+git commit -am "Agrega footer en index.html"
+<span class="c"># Agregar estilos del footer en estilos.css</span>
+git commit -am "Agrega estilos del footer"
+
+git checkout main
+<span class="c"># Agregar 2 tareas en TODO.md</span>
+git commit -am "Agrega proximas tareas en TODO"
+
+git checkout feature/footer
+git rebase main
+<span class="c"># Si hay conflicto: editar, git add &lt;archivo&gt;, git rebase --continue</span>
+
+git checkout main
+git merge feature/footer
+git log --oneline --graph --all
+git branch -d feature/footer</pre>
       <div class="check"><strong>Verificación:</strong> el historial gráfico debe verse como una línea recta, sin bifurcaciones ni commit de merge. Los dos commits del footer deben aparecer después del commit de <code>TODO.md</code>.</div>
       <p class="hint">Si durante el proceso aparecen conflictos, resuélvelos en los archivos, márcalos como resueltos y continúa el proceso.</p>
     </div>
   </section>
-
-  <section class="mission">
-    <div class="mission-head"><div class="mission-num">12</div><div class="mission-title">Documenta tu proyecto en Markdown</div></div>
-    <div class="mission-body">
-      <p>Crea en tu proyecto un archivo <code>README.md</code> bien formateado en Markdown que incluya al menos:</p>
-      <ul>
-        <li>Un título principal y una descripción breve del portafolio.</li>
-        <li>Una sección de <strong>Requisitos</strong> con una lista de viñetas.</li>
-        <li>Una sección de <strong>Estructura del proyecto</strong> en formato de tabla con los archivos principales y su propósito.</li>
-        <li>Un bloque de código mostrando cómo abrir <code>index.html</code> desde el navegador.</li>
-        <li>Una lista de tus datos de contacto.</li>
-      </ul>
-      <p>Commitea el README. Ábrelo con el visualizador Markdown de tu editor (VS Code: clic derecho → "Open Preview") para validar que se renderiza con sus títulos, tabla y bloque de código.</p>
-      <div class="check"><strong>Verificación:</strong> el archivo <code>README.md</code> está commiteado y al previsualizarlo se ve con jerarquía de títulos, tabla y bloque de código formateado.</div>
-    </div>
-  </section>
-
-  <div class="deliverable">
-    <h2>Entrega</h2>
-    <p>Al finalizar, comparte con tu profesor desde tu terminal:</p>
-    <ol>
-      <li>El historial completo de tu repositorio en formato gráfico, una línea por commit, mostrando ramas, fusiones y etiquetas (captura de pantalla).</li>
-      <li>El resultado de listar todas tus etiquetas y el detalle de la etiqueta anotada.</li>
-      <li>El contenido renderizado de tu <code>README.md</code> (captura del preview).</li>
-      <li>El listado actual de tu cajón temporal (debe estar vacío).</li>
-    </ol>
-  </div>
-
-  <div class="rubric">
-    <h2>Pauta de evaluación</h2>
-    <table>
-      <thead>
-        <tr><th>Criterio</th><th>Descripción</th><th>Puntaje</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Configuración y flujo básico</td><td>Misiones 1 a 3 completas, commits con mensajes descriptivos.</td><td>15</td></tr>
-        <tr><td>Renombrado e ignorados</td><td>Misiones 4 y 5: uso correcto del comando de renombre y archivo de exclusión funcional.</td><td>15</td></tr>
-        <tr><td>Ramas y conflictos</td><td>Misiones 6 y 7: aislamiento del trabajo y resolución manual del conflicto.</td><td>20</td></tr>
-        <tr><td>Versionado y tags</td><td>Misiones 8 y 9: restauración selectiva de archivo y etiquetas (ligera y anotada).</td><td>15</td></tr>
-        <tr><td>Stash</td><td>Misión 10: uso correcto del cajón temporal con tarea urgente intercalada.</td><td>10</td></tr>
-        <tr><td>Rebase</td><td>Misión 11: historial lineal sin commit de merge.</td><td>15</td></tr>
-        <tr><td>Documentación</td><td>Misión 12: README en Markdown con títulos, tabla y bloque de código.</td><td>10</td></tr>
-      </tbody>
-    </table>
-  </div>
 
   <footer>
     Módulo 2 — Lección 07: Fundamentos de Git (local)
