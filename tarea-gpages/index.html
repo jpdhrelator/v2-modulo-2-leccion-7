@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividad en clases — Publica tu Carta de Desarrollador en GitHub Pages</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --surface-2: #f4f1ec;
+    --border: #e4ddd2;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --accent: #c0392b;
+    --accent-soft: #c0392b14;
+    --success: #2d7a3e;
+    --warning: #b8860b;
+    --code-bg: #2d2a26;
+    --code-text: #f4f1ec;
+    --code-comment: #a89c8a;
+    --code-keyword: #f8c471;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 20px;
+  }
+  .container { max-width: 880px; margin: 0 auto; }
+  header {
+    border-left: 4px solid var(--accent);
+    padding: 12px 0 12px 20px;
+    margin-bottom: 40px;
+  }
+  header .tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  header p {
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  .context {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 36px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .context h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .context p { color: var(--text); font-size: 15px; }
+  .context p + p { margin-top: 10px; }
+  .objectives {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-top: 20px;
+  }
+  .objectives strong { color: var(--accent); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .objectives ul { margin-top: 10px; padding-left: 20px; }
+  .objectives li { color: var(--text-muted); font-size: 14px; margin: 4px 0; }
+  .prereqs {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-top: 18px;
+    border-left: 3px solid var(--warning);
+  }
+  .prereqs strong { color: var(--warning); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .prereqs ul { margin-top: 10px; padding-left: 20px; }
+  .prereqs li { color: var(--text); font-size: 14px; margin: 4px 0; }
+  section.mission {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  section.mission::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--accent);
+    border-radius: 10px 10px 0 0;
+    opacity: 0.6;
+  }
+  .mission-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .mission-num {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 50px;
+  }
+  .mission-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .mission-body p { color: var(--text); margin: 8px 0; }
+  .mission-body ul { padding-left: 22px; margin: 10px 0; }
+  .mission-body li { margin: 6px 0; color: var(--text); }
+  .mission-body em { color: var(--text-muted); font-style: italic; }
+  .check {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .check strong { color: var(--accent); }
+  code {
+    font-family: Consolas, Monaco, monospace;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  pre.cmd {
+    margin-top: 14px;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  pre.cmd::before {
+    content: "Comandos sugeridos";
+    display: block;
+    color: var(--code-keyword);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  pre.cmd .c { color: var(--code-comment); font-style: italic; }
+  pre.cmd .k { color: var(--code-keyword); }
+  .ui-steps {
+    margin-top: 14px;
+    background: var(--surface-2);
+    padding: 14px 18px;
+    border-radius: 8px;
+    border-left: 3px solid var(--success);
+    font-size: 14px;
+  }
+  .ui-steps strong {
+    color: var(--success);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .ui-steps ol { padding-left: 20px; }
+  .ui-steps li { margin: 4px 0; }
+  .hint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .hint::before { content: "Pista: "; font-weight: 700; color: var(--warning); font-style: normal; }
+  footer {
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <span class="tag">Módulo 2 — Lección 07 — Actividad en clases</span>
+    <h1>Tu Carta Coleccionable de Desarrollador en GitHub Pages</h1>
+    <p>Vas a diseñar tu propia carta estilo "trading card" de un universo de programadores. Luego la subirás a un repositorio nuevo en GitHub y la publicarás como un sitio en vivo con GitHub Pages para compartirla con quien quieras.</p>
+  </header>
+
+  <div class="context">
+    <h2>Contexto</h2>
+    <p>Imagina que existe un juego de cartas coleccionables donde cada carta representa a un desarrollador. Tu misión es crear <strong>tu carta personal</strong>: un nombre de batalla, una clase (frontend, backend, fullstack), una rareza, estadísticas en tecnologías, una habilidad especial y un dato curioso. Todo en una página web hecha desde cero con HTML, CSS y un toque de JavaScript.</p>
+    <p>Al final del ejercicio tu carta estará publicada en una URL del tipo <code>https://&lt;tu-usuario&gt;.github.io/mi-carta-dev/</code> que podrás compartir con tus compañeros, en redes sociales o en tu currículum.</p>
+
+    <div class="prereqs">
+      <strong>Antes de empezar</strong>
+      <ul>
+        <li>Tener Git instalado y configurado con tu nombre y correo.</li>
+        <li>Tener cuenta de GitHub activa.</li>
+        <li>Tener Visual Studio Code instalado.</li>
+        <li>Tener un Personal Access Token de GitHub a mano (Settings → Developer settings → Tokens), o SSH configurado.</li>
+      </ul>
+    </div>
+
+    <div class="objectives">
+      <strong>Habilidades que se evaluarán</strong>
+      <ul>
+        <li>Estructura HTML semántica y estilizada con CSS.</li>
+        <li>Interacción mínima con JavaScript usando jQuery.</li>
+        <li>Inicialización de un repositorio Git local.</li>
+        <li>Creación de un repositorio remoto en GitHub.</li>
+        <li>Conexión de local con remoto y primer push.</li>
+        <li>Publicación de un sitio estático con GitHub Pages.</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">01</div><div class="mission-title">Crea la estructura del proyecto</div></div>
+    <div class="mission-body">
+      <p>Desde Visual Studio Code, crea una nueva carpeta llamada <code>mi-carta-dev</code> en tu directorio de trabajo y ábrela.</p>
+      <p>Dentro, crea los siguientes archivos: <code>index.html</code>, <code>estilos.css</code> y <code>script.js</code>.</p>
+      <div class="ui-steps">
+        <strong>Pasos en Visual Studio Code</strong>
+        <ol>
+          <li><code>File → Open Folder…</code> y elige (o crea) la carpeta <code>mi-carta-dev</code>.</li>
+          <li>En el explorador, clic derecho dentro de la carpeta → <strong>New File</strong> → escribe <code>index.html</code>.</li>
+          <li>Repite para <code>estilos.css</code> y <code>script.js</code>.</li>
+        </ol>
+      </div>
+      <div class="check"><strong>Verificación:</strong> en el panel lateral de VS Code la carpeta <code>mi-carta-dev</code> muestra los tres archivos.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">02</div><div class="mission-title">Diseña la estructura HTML de tu carta</div></div>
+    <div class="mission-body">
+      <p>En <code>index.html</code> construye una estructura HTML mínima con:</p>
+      <ul>
+        <li><code>&lt;!DOCTYPE html&gt;</code>, etiquetas <code>html</code>, <code>head</code> y <code>body</code>.</li>
+        <li>En el <code>head</code>: <code>meta charset</code>, <code>meta viewport</code>, un <code>title</code> con tu nombre de batalla, la vinculación a <code>estilos.css</code> y la inclusión de jQuery desde CDN (<code>&lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;</code>).</li>
+        <li>En el <code>body</code>, un contenedor con clase <code>carta</code> que incluya:
+          <ul>
+            <li>Un encabezado con tu <strong>nombre de batalla</strong> y tu <strong>clase</strong> (Frontend, Backend o Fullstack).</li>
+            <li>Una imagen o avatar (puede ser un emoji grande dentro de un <code>&lt;div&gt;</code>, una imagen libre de Unsplash, o un avatar de DiceBear: <code>https://api.dicebear.com/7.x/bottts/svg?seed=tu-nombre</code>).</li>
+            <li>Una sección <strong>Estadísticas</strong> con al menos 3 tecnologías y un valor de 1 a 100 cada una.</li>
+            <li>Una sección <strong>Habilidad especial</strong> con un nombre creativo y una descripción de una línea.</li>
+            <li>Una <strong>rareza</strong> visible (Común, Rara, Épica o Legendaria).</li>
+            <li>Un botón con id <code>btn-activar</code> que diga <em>"Activar habilidad"</em>.</li>
+          </ul>
+        </li>
+        <li>Al final del <code>body</code>, un <code>&lt;script src="script.js"&gt;</code>.</li>
+      </ul>
+      <p>Guarda con <code>Ctrl + S</code> (o <code>Cmd + S</code>).</p>
+      <div class="check"><strong>Verificación:</strong> al abrir <code>index.html</code> en el navegador (doble clic), se ven todos los elementos aunque aún sin estilos.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">03</div><div class="mission-title">Dale estilo: que parezca una carta real</div></div>
+    <div class="mission-body">
+      <p>En <code>estilos.css</code>, dale identidad visual a la carta. Como mínimo:</p>
+      <ul>
+        <li>Centra la carta en la pantalla (flexbox o grid).</li>
+        <li>Dale a la carta un ancho fijo (por ejemplo <code>320px</code>), bordes redondeados, sombra y un fondo con degradado.</li>
+        <li>El color del borde debe cambiar según la rareza: dorado para Legendaria, morado para Épica, azul para Rara, gris para Común.</li>
+        <li>Para cada estadística, muestra una barra de progreso usando un <code>div</code> contenedor y un <code>div</code> hijo con ancho en porcentaje.</li>
+        <li>Hover sobre la carta: levántala con <code>transform: translateY(-8px)</code> y aumenta la sombra.</li>
+        <li>Asegura que el botón se vea como botón (padding, cursor pointer, estado hover).</li>
+      </ul>
+      <div class="check"><strong>Verificación:</strong> al recargar el navegador la carta tiene aspecto de carta de juego, las barras se ven proporcionales y el hover responde.</div>
+      <p class="hint">Si no se te ocurre la paleta, partir de un fondo oscuro (<code>#1a1a2e</code>) con texto claro y un acento dorado (<code>#f4c430</code>) suele funcionar bien.</p>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">04</div><div class="mission-title">Agrega vida con jQuery</div></div>
+    <div class="mission-body">
+      <p>En <code>script.js</code>, usando jQuery, haz que el botón <em>"Activar habilidad"</em> tenga un comportamiento divertido. Recuerda envolver tu código en <code>$(document).ready(function () { ... });</code> para asegurarte de que el DOM ya está cargado.</p>
+      <p>Elige al menos <strong>dos</strong> de estas opciones y déjalas funcionando:</p>
+      <ul>
+        <li>Al hacer clic, mostrar un <code>alert</code> con el nombre de tu habilidad especial.</li>
+        <li>Agregar una clase CSS a la carta con <code>.addClass()</code> que cambie su color de fondo o le aplique una animación.</li>
+        <li>Llevar la cuenta de activaciones mostrándola en pantalla con <code>.text()</code> sobre un elemento dedicado.</li>
+        <li>Al pasar el mouse sobre la carta (<code>.hover()</code>), cambiar dinámicamente el texto de la rareza por algo divertido y volverlo al original al salir.</li>
+      </ul>
+<pre class="cmd"><span class="c">// script.js - estructura jQuery sugerida</span>
+$(document).ready(function () {
+
+  <span class="c">// 1. Click en el botón</span>
+  $("#btn-activar").click(function () {
+    alert("¡Habilidad activada!");
+    $(".carta").addClass("activa");
+  });
+
+  <span class="c">// 2. Contador de activaciones</span>
+  let veces = 0;
+  $("#btn-activar").click(function () {
+    veces++;
+    $("#contador").text("Activada " + veces + " veces");
+  });
+
+  <span class="c">// 3. Hover sobre la carta</span>
+  $(".carta").hover(
+    function () { $(".rareza").text("¡LEGENDARIA!"); },
+    function () { $(".rareza").text("Rara"); }
+  );
+
+});</pre>
+      <p class="hint">Para que la opción del contador funcione, agrega en tu HTML un <code>&lt;span id="contador"&gt;&lt;/span&gt;</code> dentro de la carta. Para la animación, define la clase <code>.activa</code> en tu CSS con cambios visibles (color, transform, etc.).</p>
+      <div class="check"><strong>Verificación:</strong> al hacer clic en el botón ocurre algo visible y consistente con el tema de la carta. Las interacciones con jQuery funcionan sin errores en la consola del navegador.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">05</div><div class="mission-title">Inicializa el repositorio local</div></div>
+    <div class="mission-body">
+      <p>Abre la terminal integrada de VS Code (<code>Terminal → New Terminal</code>) ubicado dentro de la carpeta <code>mi-carta-dev</code>. Inicializa Git, agrega todos los archivos y haz tu primer commit.</p>
+<pre class="cmd"><span class="c"># Verificar que estás en la carpeta correcta</span>
+pwd
+
+git init
+git status
+
+git add --all
+git commit -m "feat: version inicial de mi carta de desarrollador"
+
+git log --oneline</pre>
+      <div class="check"><strong>Verificación:</strong> <code>git log --oneline</code> muestra un commit, y <code>git status</code> queda limpio.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">06</div><div class="mission-title">Crea el repositorio en GitHub</div></div>
+    <div class="mission-body">
+      <p>Entra a github.com con tu cuenta y crea un nuevo repositorio <strong>vacío</strong>. No lo inicialices con README, .gitignore ni licencia (los crearás tú).</p>
+      <div class="ui-steps">
+        <strong>Pasos en la interfaz de GitHub</strong>
+        <ol>
+          <li>Botón verde <strong>New</strong> (o ícono <strong>+ → New repository</strong> arriba a la derecha).</li>
+          <li>Repository name: <code>mi-carta-dev</code></li>
+          <li>Description: <em>"Mi carta coleccionable de desarrollador"</em></li>
+          <li>Visibilidad: <strong>Public</strong> (necesario para usar GitHub Pages gratis).</li>
+          <li><strong>NO</strong> marques <em>Add a README file</em>, ni <em>.gitignore</em>, ni <em>license</em>.</li>
+          <li>Botón <strong>Create repository</strong>.</li>
+        </ol>
+      </div>
+      <p>Copia la URL del repo que aparece en la página siguiente (formato HTTPS): se ve como <code>https://github.com/&lt;tu-usuario&gt;/mi-carta-dev.git</code>.</p>
+      <div class="check"><strong>Verificación:</strong> tienes una página de repositorio nuevo en GitHub con instrucciones de "push an existing repository from the command line" y la URL copiada.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">07</div><div class="mission-title">Conecta tu repo local con GitHub y sube</div></div>
+    <div class="mission-body">
+      <p>Vuelve a la terminal de VS Code. Conecta tu repositorio local con el remoto que acabas de crear, asegúrate de que tu rama se llame <code>main</code> y haz el primer push.</p>
+<pre class="cmd"><span class="c"># Conectar remoto (reemplaza por TU URL)</span>
+git remote add origin https://github.com/&lt;tu-usuario&gt;/mi-carta-dev.git
+
+<span class="c"># Verificar</span>
+git remote -v
+
+<span class="c"># Asegurar nombre de rama main</span>
+git branch -M main
+
+<span class="c"># Primer push (vincula la rama local con la remota)</span>
+git push -u origin main</pre>
+      <p>Si Git te pide credenciales, ingresa tu usuario de GitHub y, como contraseña, tu <strong>Personal Access Token</strong>.</p>
+      <div class="check"><strong>Verificación:</strong> al recargar tu repositorio en github.com aparecen los tres archivos (<code>index.html</code>, <code>estilos.css</code>, <code>script.js</code>) y tu commit en el historial.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">08</div><div class="mission-title">Activa GitHub Pages</div></div>
+    <div class="mission-body">
+      <p>Publica tu carta como un sitio en vivo usando GitHub Pages.</p>
+      <div class="ui-steps">
+        <strong>Pasos en la interfaz de GitHub</strong>
+        <ol>
+          <li>Dentro de tu repo <code>mi-carta-dev</code>, ve a la pestaña <strong>Settings</strong>.</li>
+          <li>En el menú lateral izquierdo, sección <strong>Code and automation</strong>, haz clic en <strong>Pages</strong>.</li>
+          <li>En <em>Source</em> elige <strong>Deploy from a branch</strong>.</li>
+          <li>En <em>Branch</em>, selecciona <code>main</code> y carpeta <code>/ (root)</code>.</li>
+          <li>Botón <strong>Save</strong>.</li>
+          <li>Espera entre 30 segundos y 2 minutos. Recarga la página de Pages: aparecerá un cuadro verde con tu URL pública: <code>https://&lt;tu-usuario&gt;.github.io/mi-carta-dev/</code>.</li>
+        </ol>
+      </div>
+      <div class="check"><strong>Verificación:</strong> al abrir la URL pública en una pestaña nueva del navegador, tu carta se muestra exactamente como en local y el botón de habilidad funciona.</div>
+      <p class="hint">Si ves una página 404, espera un minuto más y recarga. También revisa que <code>index.html</code> esté en la raíz del repo (no dentro de subcarpetas).</p>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">09</div><div class="mission-title">Itera y publica un cambio</div></div>
+    <div class="mission-body">
+      <p>Ya tienes el flujo completo. Ahora demuestra que sabes mantenerlo: vuelve a VS Code, modifica algo visible de tu carta (cambia un valor de estadística, agrega una nueva o cambia el color de fondo). Guarda, commitea y empuja al remoto.</p>
+<pre class="cmd"><span class="c"># Edita archivos en VS Code y guarda</span>
+
+git status
+git add --all
+git commit -m "feat: ajusta estadisticas y color de la carta"
+git push</pre>
+      <p>Espera unos segundos y recarga la URL pública: tus cambios aparecen en vivo.</p>
+      <div class="check"><strong>Verificación:</strong> el sitio publicado refleja los cambios que acabas de hacer, sin necesidad de reactivar GitHub Pages.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">10</div><div class="mission-title">Comparte tu carta</div></div>
+    <div class="mission-body">
+      <p>Copia la URL pública de tu sitio (<code>https://&lt;tu-usuario&gt;.github.io/mi-carta-dev/</code>) y compártela en el canal del curso. Revisa al menos 2 cartas de tus compañeros y deja un comentario sobre cuál habilidad te gustó más.</p>
+      <div class="check"><strong>Verificación:</strong> tu URL está publicada en el canal del curso y has comentado al menos 2 cartas de compañeros.</div>
+    </div>
+  </section>
+
+  <footer>
+    Módulo 2 — Lección 07: HTML + GitHub Pages
+  </footer>
+
+</div>
+</body>
+</html>
