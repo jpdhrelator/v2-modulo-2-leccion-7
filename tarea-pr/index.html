@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividad en clases — Pull Request en GitHub</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --surface-2: #f4f1ec;
+    --border: #e4ddd2;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --accent: #c0392b;
+    --accent-soft: #c0392b14;
+    --success: #2d7a3e;
+    --warning: #b8860b;
+    --code-bg: #2d2a26;
+    --code-text: #f4f1ec;
+    --code-comment: #a89c8a;
+    --code-keyword: #f8c471;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 20px;
+  }
+  .container { max-width: 880px; margin: 0 auto; }
+  header {
+    border-left: 4px solid var(--accent);
+    padding: 12px 0 12px 20px;
+    margin-bottom: 40px;
+  }
+  header .tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  header p {
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  .context {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 36px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .context h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .context p { color: var(--text); font-size: 15px; }
+  .context p + p { margin-top: 10px; }
+  .objectives {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-top: 20px;
+  }
+  .objectives strong { color: var(--accent); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .objectives ul { margin-top: 10px; padding-left: 20px; }
+  .objectives li { color: var(--text-muted); font-size: 14px; margin: 4px 0; }
+  .prereqs {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-top: 18px;
+    border-left: 3px solid var(--warning);
+  }
+  .prereqs strong { color: var(--warning); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .prereqs ul { margin-top: 10px; padding-left: 20px; }
+  .prereqs li { color: var(--text); font-size: 14px; margin: 4px 0; }
+  section.mission {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  section.mission::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--accent);
+    border-radius: 10px 10px 0 0;
+    opacity: 0.6;
+  }
+  .mission-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .mission-num {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 50px;
+  }
+  .mission-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .mission-body p { color: var(--text); margin: 8px 0; }
+  .mission-body ul { padding-left: 22px; margin: 10px 0; }
+  .mission-body li { margin: 6px 0; color: var(--text); }
+  .mission-body em { color: var(--text-muted); font-style: italic; }
+  .check {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .check strong { color: var(--accent); }
+  code {
+    font-family: Consolas, Monaco, monospace;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  pre.cmd {
+    margin-top: 14px;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+  }
+  pre.cmd::before {
+    content: "Comandos sugeridos";
+    display: block;
+    color: var(--code-keyword);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  pre.cmd .c { color: var(--code-comment); font-style: italic; }
+  pre.cmd .k { color: var(--code-keyword); }
+  .ui-steps {
+    margin-top: 14px;
+    background: var(--surface-2);
+    padding: 14px 18px;
+    border-radius: 8px;
+    border-left: 3px solid var(--success);
+    font-size: 14px;
+  }
+  .ui-steps strong {
+    color: var(--success);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .ui-steps ol { padding-left: 20px; }
+  .ui-steps li { margin: 4px 0; }
+  .hint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .hint::before { content: "Pista: "; font-weight: 700; color: var(--warning); font-style: normal; }
+  footer {
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <span class="tag">Módulo 2 — Lección 07 — Actividad en clases</span>
+    <h1>Tu primer Pull Request en GitHub</h1>
+    <p>Vas a colaborar sobre el repositorio del curso. Crearás tu propia rama, subirás un cambio y abrirás un Pull Request para que el profesor lo revise y lo fusione.</p>
+  </header>
+
+  <div class="context">
+    <h2>Contexto</h2>
+    <p>El profesor mantiene un repositorio del curso al cual cada uno de ustedes debe contribuir agregando un archivo Markdown con su presentación personal. Vas a trabajar como colaborador del repositorio: clonas, creas tu propia rama, haces tu commit, lo subes y abres un Pull Request hacia <code>main</code>. Cuando el profesor lo apruebe, tu archivo quedará para siempre en la historia del curso.</p>
+
+    <div class="prereqs">
+      <strong>Antes de empezar</strong>
+      <ul>
+        <li>Tener una cuenta de GitHub activa.</li>
+        <li>Estar agregado por el profesor como colaborador del repositorio del curso (revisa la invitación en tu correo y acéptala).</li>
+        <li>Tener Git instalado y configurado con tu nombre y correo (el mismo de GitHub).</li>
+        <li>URL del repositorio del curso: <code>https://github.com/jpdhrelator/cv2-modulo-2-leccion-7-alumnos.git</code> (te la entregará el profesor).</li>
+      </ul>
+    </div>
+
+    <div class="objectives">
+      <strong>Habilidades que se evaluarán</strong>
+      <ul>
+        <li>Clonar un repositorio remoto.</li>
+        <li>Crear y posicionarse en una rama con nombre descriptivo.</li>
+        <li>Commit con mensaje claro siguiendo buenas prácticas.</li>
+        <li>Push de la rama al repositorio remoto.</li>
+        <li>Apertura, descripción y seguimiento de un Pull Request.</li>
+        <li>Respuesta a comentarios de revisión.</li>
+        <li>Sincronización de la rama local tras el merge.</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">01</div><div class="mission-title">Acepta la invitación y clona el repositorio</div></div>
+    <div class="mission-body">
+      <p>Revisa tu correo o tus notificaciones en GitHub y acepta la invitación que el profesor te envió para ser colaborador del repositorio del curso.</p>
+      <p>Una vez aceptada, abre tu terminal, ubícate en una carpeta de trabajo (por ejemplo <code>~/cursos</code>) y clona el repositorio del profesor en tu máquina.</p>
+<pre class="cmd"><span class="c"># Ubicarse en la carpeta donde trabajar</span>
+mkdir -p ~/cursos
+cd ~/cursos
+
+<span class="c"># Clonar el repositorio del curso</span>
+git clone https://github.com/jpdhrelator/cv2-modulo-2-leccion-7-alumnos.git
+cd cv2-modulo-2-leccion-7-alumnos
+
+<span class="c"># Verificar el remoto</span>
+git remote -v
+ls</pre>
+      <div class="check"><strong>Verificación:</strong> al listar el remoto debe aparecer <code>origin</code> apuntando al repo del profesor, y al listar el contenido debe verse la carpeta <code>alumnos/</code>.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">02</div><div class="mission-title">Asegúrate de partir desde main actualizado</div></div>
+    <div class="mission-body">
+      <p>Posiciónate en la rama <code>main</code> y trae los últimos cambios desde el remoto. Esto es clave: nunca crees una rama desde una versión vieja.</p>
+<pre class="cmd">git checkout main
+git pull origin main
+git log --oneline -5</pre>
+      <div class="check"><strong>Verificación:</strong> el mensaje de <code>git pull</code> debe decir <em>"Already up to date"</em> o haberte traído nuevos commits sin conflictos.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">03</div><div class="mission-title">Crea tu rama personal</div></div>
+    <div class="mission-body">
+      <p>Crea una nueva rama usando una convención de nombres clara. Para esta actividad, el formato será <code>alumno/&lt;tu-nombre&gt;</code> (todo en minúsculas, sin tildes y separando palabras con guiones). Por ejemplo: <code>alumno/juan-perez</code>.</p>
+      <p>Posiciónate en esa rama.</p>
+<pre class="cmd">git checkout -b alumno/&lt;tu-nombre&gt;
+
+<span class="c"># Confirmar en qué rama estás</span>
+git branch</pre>
+      <div class="check"><strong>Verificación:</strong> el comando <code>git branch</code> debe mostrar tu rama nueva marcada con un asterisco.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">04</div><div class="mission-title">Crea tu archivo Markdown de presentación</div></div>
+    <div class="mission-body">
+      <p>Dentro de la carpeta <code>alumnos/</code> crea un archivo con tu nombre, en formato <code>alumnos/&lt;tu-nombre&gt;.md</code> (mismo nombre que usaste para la rama).</p>
+      <p>El archivo debe contener al menos:</p>
+      <ul>
+        <li>Un título principal con tu nombre completo.</li>
+        <li>Una sección <strong>Sobre mí</strong> con 2 o 3 líneas de presentación.</li>
+        <li>Una sección <strong>Stack que estoy aprendiendo</strong> en formato de lista de viñetas.</li>
+        <li>Una sección <strong>Contacto</strong> con un enlace a tu perfil de GitHub.</li>
+      </ul>
+      <div class="ui-steps">
+        <strong>Pasos en Visual Studio Code</strong>
+        <ol>
+          <li>Abre la carpeta del repositorio en VS Code (<code>File → Open Folder...</code>).</li>
+          <li>En el panel del explorador haz clic derecho sobre la carpeta <code>alumnos/</code> → <strong>New File</strong>.</li>
+          <li>Nombra el archivo <code>tu-nombre.md</code> (mismo nombre que tu rama, en minúsculas y con guiones).</li>
+          <li>Escribe el contenido siguiendo la estructura Markdown sugerida abajo.</li>
+          <li>Guarda con <code>Ctrl + S</code> (o <code>Cmd + S</code> en Mac).</li>
+        </ol>
+      </div>
+<pre class="cmd"><span class="c"># Estructura Markdown sugerida para el contenido del archivo:</span>
+<span class="c">#   # Nombre Completo</span>
+<span class="c">#   ## Sobre mí</span>
+<span class="c">#   Texto breve...</span>
+<span class="c">#   ## Stack</span>
+<span class="c">#   - HTML</span>
+<span class="c">#   - CSS</span>
+<span class="c">#   - JavaScript</span>
+<span class="c">#   ## Contacto</span>
+<span class="c">#   [Mi GitHub](https://github.com/tu-usuario)</span></pre>
+      <div class="check"><strong>Verificación:</strong> el archivo existe dentro de <code>alumnos/</code> y al previsualizarlo en VS Code (clic derecho → Open Preview) se ve con sus secciones bien formateadas.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">05</div><div class="mission-title">Commitea tu cambio</div></div>
+    <div class="mission-body">
+      <p>Agrega el nuevo archivo al área de preparación y haz un único commit con un mensaje descriptivo siguiendo el formato <code>docs: agrega presentación de &lt;tu-nombre&gt;</code>.</p>
+<pre class="cmd">git status
+git add alumnos/&lt;tu-nombre&gt;.md
+git status
+git commit -m "docs: agrega presentacion de &lt;tu-nombre&gt;"
+git log --oneline -3</pre>
+      <div class="check"><strong>Verificación:</strong> <code>git status</code> queda limpio después del commit y el historial muestra tu commit como el más reciente en tu rama.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">06</div><div class="mission-title">Sube tu rama al repositorio remoto</div></div>
+    <div class="mission-body">
+      <p>Envía tu rama personal al repositorio del profesor. Es la primera vez que la subes, así que debes vincular la rama local con el remoto.</p>
+<pre class="cmd">git push -u origin alumno/&lt;tu-nombre&gt;</pre>
+      <p>Si Git te pide credenciales, ingresa tu usuario de GitHub. Como contraseña <strong>no</strong> uses tu password de GitHub — usa un <em>Personal Access Token</em> generado desde GitHub → Settings → Developer settings → Tokens, o configura SSH.</p>
+      <div class="check"><strong>Verificación:</strong> al entrar al repositorio del profesor en GitHub y abrir el desplegable de ramas, debe aparecer tu rama <code>alumno/&lt;tu-nombre&gt;</code>.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">07</div><div class="mission-title">Abre el Pull Request</div></div>
+    <div class="mission-body">
+      <p>Entra al repositorio del curso en GitHub y abre un Pull Request desde tu rama hacia <code>main</code>.</p>
+      <div class="ui-steps">
+        <strong>Pasos en la interfaz de GitHub</strong>
+        <ol>
+          <li>En la página principal del repo verás un banner amarillo que dice <em>"alumno/tu-nombre had recent pushes"</em> con un botón <strong>Compare &amp; pull request</strong>. Haz clic.</li>
+          <li>Si no aparece, ve a la pestaña <strong>Pull requests</strong> → botón <strong>New pull request</strong>. En <em>base</em> elige <code>main</code>, en <em>compare</em> elige tu rama.</li>
+          <li>Escribe un título claro: <code>docs: agrega presentación de &lt;tu-nombre&gt;</code></li>
+          <li>En la descripción incluye:
+            <ul>
+              <li>Qué archivo agregaste.</li>
+              <li>Una línea sobre ti.</li>
+              <li>Tu usuario de GitHub.</li>
+            </ul>
+          </li>
+          <li>En el panel derecho, en <strong>Reviewers</strong>, asigna al profesor.</li>
+          <li>Haz clic en <strong>Create pull request</strong>.</li>
+        </ol>
+      </div>
+      <div class="check"><strong>Verificación:</strong> en la pestaña <em>Pull requests</em> del repo aparece tu PR abierto con tu título, descripción y el profesor asignado como reviewer.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">08</div><div class="mission-title">Atiende los comentarios de revisión</div></div>
+    <div class="mission-body">
+      <p>El profesor revisará tu PR y dejará comentarios. Lee cada uno con calma y aplica los cambios solicitados en local.</p>
+      <p>Para cada cambio: edita el archivo, commitea con un mensaje claro (por ejemplo <code>fix: ajusta titulo segun revision</code>) y vuelve a subir tu rama. El PR se actualiza automáticamente con tu nuevo commit.</p>
+<pre class="cmd"><span class="c"># Asegurate de estar en tu rama</span>
+git branch
+
+<span class="c"># Editar el archivo segun los comentarios</span>
+git add alumnos/&lt;tu-nombre&gt;.md
+git commit -m "fix: aplica cambios solicitados en la revision"
+git push</pre>
+      <p>Cuando hayas resuelto un comentario, vuelve al PR en GitHub y marca el comentario como <strong>Resolved</strong>.</p>
+      <div class="check"><strong>Verificación:</strong> en el PR aparece un nuevo commit con tus correcciones, los comentarios atendidos están marcados como resueltos y el estado del PR pasa a permitir el merge.</div>
+    </div>
+  </section>
+
+  <section class="mission">
+    <div class="mission-head"><div class="mission-num">09</div><div class="mission-title">Confirma el merge y sincroniza tu local</div></div>
+    <div class="mission-body">
+      <p>Cuando el profesor apruebe el PR, será él quien haga el merge. Una vez fusionado, tu trabajo está oficialmente en <code>main</code>.</p>
+      <p>Para que tu copia local quede al día, vuelve a tu rama principal y trae los cambios. Luego elimina tu rama local y la rama del remoto (ya no la necesitas).</p>
+<pre class="cmd">git checkout main
+git pull origin main
+
+<span class="c"># Confirmar que tu archivo aparece en main</span>
+ls alumnos/
+
+<span class="c"># Eliminar tu rama local</span>
+git branch -d alumno/&lt;tu-nombre&gt;
+
+<span class="c"># Eliminar tu rama en el remoto</span>
+git push origin --delete alumno/&lt;tu-nombre&gt;</pre>
+      <div class="check"><strong>Verificación:</strong> tu archivo <code>alumnos/&lt;tu-nombre&gt;.md</code> está visible en <code>main</code> tanto en local como en github.com, y tu rama personal ya no aparece en el listado del repositorio.</div>
+      <p class="hint">Si por error la rama local tiene cambios sin pushear, Git no te dejará eliminarla con <code>-d</code>. Revisa esos cambios antes de forzar la eliminación.</p>
+    </div>
+  </section>
+
+  <footer>
+    Módulo 2 — Lección 07: Pull Requests en GitHub
+  </footer>
+
+</div>
+</body>
+</html>
