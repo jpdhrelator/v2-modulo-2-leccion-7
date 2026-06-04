@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soluciones — Retos Extra | Carta de Desarrollador</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  :root {
+    --bg: #fdf6ec;
+    --paper: #ffffff;
+    --ink: #2b2d42;
+    --ink-soft: #6b6f86;
+    --accent: #c0392b;
+    --bonus: #e67e22;
+    --code-bg: #2d2a26;
+    --code-text: #f4f1ec;
+    --code-comment: #a89c8a;
+    --code-keyword: #f8c471;
+    --gold: #f4c430;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    padding: 40px 20px;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+  /* MODO NOCHE — Misión 12 */
+  body.modo-noche {
+    background: #1a1a2e;
+    color: #f4f1ec;
+  }
+  body.modo-noche .demo-wrap { background: #232342; }
+  body.modo-noche .doc { background: #232342; border-color: #3a3a5a; }
+  body.modo-noche h2, body.modo-noche h3 { color: #f4f1ec; }
+  body.modo-noche p { color: #c9c9d4; }
+
+  .container { max-width: 980px; margin: 0 auto; }
+
+  header {
+    border-left: 4px solid var(--bonus);
+    padding: 12px 0 12px 20px;
+    margin-bottom: 30px;
+  }
+  header .tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--bonus);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+  header p {
+    color: var(--ink-soft);
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  /* DEMO WRAP */
+  .demo-wrap {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow: 0 10px 30px rgba(43, 45, 66, 0.08);
+    margin-bottom: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    transition: background 0.4s ease;
+  }
+  @media (max-width: 720px) {
+    .demo-wrap { grid-template-columns: 1fr; }
+  }
+
+  /* CARTA — Misiones base + bonus */
+  .carta {
+    width: 100%;
+    max-width: 320px;
+    background: linear-gradient(160deg, #1a1a2e, #2a2a4a);
+    color: #fff;
+    border-radius: 18px;
+    padding: 22px;
+    border: 3px solid var(--gold);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto;
+  }
+  .carta:hover { transform: translateY(-8px); }
+  .carta.brillo {
+    box-shadow: 0 0 35px var(--gold), 0 10px 30px rgba(0, 0, 0, 0.25);
+    transform: scale(1.03);
+  }
+  .carta h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .carta .clase {
+    font-size: 12px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .carta .avatar {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--gold);
+  }
+  .carta .avatar svg { width: 90px; height: 90px; }
+  .carta .stat {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .carta .stat-name { display: flex; justify-content: space-between; margin-bottom: 3px; }
+  .carta .bar {
+    height: 8px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .carta .bar > div {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 4px;
+  }
+  .carta .seccion {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(255,255,255,0.2);
+    font-size: 13px;
+  }
+  .carta .seccion strong {
+    color: var(--gold);
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .carta .rareza {
+    text-align: center;
+    margin-top: 14px;
+    padding: 6px;
+    background: rgba(244, 196, 48, 0.15);
+    color: var(--gold);
+    border-radius: 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .acciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .carta button {
+    background: var(--gold);
+    color: #1a1a2e;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+  }
+  .carta button:hover { background: #fff; transform: translateY(-1px); }
+  #reverso { display: none; }
+  #poder {
+    text-align: center;
+    font-style: italic;
+    color: var(--gold);
+    min-height: 22px;
+  }
+  #hobby-horas {
+    display: block;
+    font-size: 11px;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  /* PANEL CONTROLES EXTERNOS */
+  .controles {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .controles h3 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .controles p { font-size: 14px; color: var(--ink-soft); }
+  .controles button {
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s ease;
+  }
+  .controles button:hover { background: var(--accent); }
+
+  /* DOCS */
+  .doc {
+    background: var(--paper);
+    border: 1px solid #e4ddd2;
+    border-radius: 12px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    border-left: 4px solid var(--bonus);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: background 0.4s ease;
+  }
+  .doc h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .doc .label {
+    display: inline-block;
+    background: var(--bonus);
+    color: white;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .doc p { color: var(--ink-soft); font-size: 14.5px; margin-bottom: 14px; }
+  .doc h3 {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 18px 0 8px;
+  }
+  pre.code {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    overflow-x: auto;
+    border-left: 3px solid var(--bonus);
+  }
+  pre.code .c { color: var(--code-comment); font-style: italic; }
+  pre.code .k { color: var(--code-keyword); }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(43, 45, 66, 0.12);
+    color: var(--ink-soft);
+    font-size: 13px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <span class="tag">Profesor — Material de apoyo</span>
+    <h1>Soluciones de los Retos Extra</h1>
+    <p>Demo en vivo de las 4 misiones bonus + código completo de cada una. Úsalo como referencia o para mostrar el resultado esperado a los alumnos.</p>
+  </header>
+
+  <!-- DEMO EN VIVO -->
+  <div class="demo-wrap">
+
+    <div class="carta">
+      <h2>Devmaster</h2>
+      <div class="clase">Fullstack · Rareza Legendaria</div>
+      <div class="avatar">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" fill="#f4c430"/>
+          <rect x="28" y="38" width="14" height="14" rx="3" fill="#1a1a2e"/>
+          <rect x="58" y="38" width="14" height="14" rx="3" fill="#1a1a2e"/>
+          <path d="M30 70 Q50 82, 70 70" stroke="#1a1a2e" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="stat">
+        <div class="stat-name"><span>HTML</span><span>92</span></div>
+        <div class="bar"><div style="width:92%"></div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-name"><span>CSS</span><span>85</span></div>
+        <div class="bar"><div style="width:85%"></div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-name"><span>jQuery</span><span>78</span></div>
+        <div class="bar"><div style="width:78%"></div></div>
+      </div>
+
+      <div class="seccion">
+        <strong>Habilidad especial</strong>
+        Refactor relámpago en cualquier código heredado.
+      </div>
+
+      <!-- Hobby — Misión 11 -->
+      <div class="seccion" id="hobby-box">
+        <strong>Hobby al azar</strong>
+        <span id="hobby-nombre"></span> — <span id="hobby-desc"></span>
+        <span id="hobby-horas"></span>
+      </div>
+
+      <!-- Poder — Misión 14 -->
+      <div class="seccion">
+        <strong>Poder activo</strong>
+        <div id="poder">—</div>
+      </div>
+
+      <!-- Reverso — Misión 13 -->
+      <div class="seccion" id="reverso">
+        <strong>Reverso secreto</strong>
+        Frase: "Compila o muere intentándolo."<br>
+        Comida favorita: Sushi.<br>
+        Canción para programar: Lofi beats infinitos.<br>
+        Dato curioso: Aprendió a programar con un Tamagotchi.
+      </div>
+
+      <div class="rareza">★ Legendaria</div>
+
+      <div class="acciones">
+        <button id="btn-hobby">Otro hobby</button>
+        <button id="btn-reverso">Ver reverso</button>
+        <button id="btn-poder">Lanzar poder</button>
+      </div>
+    </div>
+
+    <div class="controles">
+      <h3>Controles externos</h3>
+      <p>Pruébalos: alternan el tema global de la página completa.</p>
+      <button id="btn-modo">Modo noche</button>
+    </div>
+
+  </div>
+
+  <!-- ===== DOCS ===== -->
+
+  <div class="doc">
+    <span class="label">Misión 11</span>
+    <h2>Hobbies con jQuery dinámico</h2>
+    <p>Mostrar un hobby al azar al cargar, cambiar entre ellos con fade y revelar horas semanales al doble clic.</p>
+
+    <h3>HTML (dentro de la carta)</h3>
+<pre class="code"><span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"seccion" id</span>=<span class="k">"hobby-box"</span><span class="k">&gt;</span>
+  <span class="k">&lt;strong&gt;</span>Hobby al azar<span class="k">&lt;/strong&gt;</span>
+  <span class="k">&lt;span</span> <span class="k">id</span>=<span class="k">"hobby-nombre"</span><span class="k">&gt;&lt;/span&gt;</span> — <span class="k">&lt;span</span> <span class="k">id</span>=<span class="k">"hobby-desc"</span><span class="k">&gt;&lt;/span&gt;</span>
+  <span class="k">&lt;span</span> <span class="k">id</span>=<span class="k">"hobby-horas"</span><span class="k">&gt;&lt;/span&gt;</span>
+<span class="k">&lt;/div&gt;</span>
+<span class="k">&lt;button</span> <span class="k">id</span>=<span class="k">"btn-hobby"</span><span class="k">&gt;</span>Otro hobby<span class="k">&lt;/button&gt;</span></pre>
+
+    <h3>jQuery</h3>
+<pre class="code">$(<span class="k">document</span>).ready(<span class="k">function</span> () {
+
+  <span class="c">// Array de hobbies del alumno</span>
+  <span class="k">const</span> hobbies = [
+    { nombre: <span class="k">"Cocinar"</span>, descripcion: <span class="k">"Pasta los domingos"</span>, horas: 4 },
+    { nombre: <span class="k">"Gaming"</span>,  descripcion: <span class="k">"Indie y estrategia"</span>,  horas: 6 },
+    { nombre: <span class="k">"Leer"</span>,    descripcion: <span class="k">"Ciencia ficción"</span>,     horas: 3 },
+    { nombre: <span class="k">"Dibujar"</span>, descripcion: <span class="k">"Sketches a lápiz"</span>,    horas: 2 }
+  ];
+  <span class="k">let</span> i = Math.floor(Math.random() * hobbies.length);
+
+  <span class="k">function</span> pintarHobby() {
+    $(<span class="k">"#hobby-nombre"</span>).text(hobbies[i].nombre);
+    $(<span class="k">"#hobby-desc"</span>).text(hobbies[i].descripcion);
+    $(<span class="k">"#hobby-horas"</span>).text(<span class="k">""</span>);
+  }
+  pintarHobby();
+
+  <span class="c">// Cambiar de hobby con fade</span>
+  $(<span class="k">"#btn-hobby"</span>).click(<span class="k">function</span> () {
+    $(<span class="k">"#hobby-box"</span>).fadeOut(200, <span class="k">function</span> () {
+      i = (i + 1) % hobbies.length;
+      pintarHobby();
+      $(<span class="k">this</span>).fadeIn(200);
+    });
+  });
+
+  <span class="c">// Doble clic = mostrar horas</span>
+  $(<span class="k">"#hobby-box"</span>).dblclick(<span class="k">function</span> () {
+    $(<span class="k">"#hobby-horas"</span>).text(<span class="k">"~"</span> + hobbies[i].horas + <span class="k">" hrs/semana"</span>);
+  });
+
+});</pre>
+  </div>
+
+  <div class="doc">
+    <span class="label">Misión 12</span>
+    <h2>Modo Nocturno</h2>
+    <p>Alterna una clase en el body para cambiar todo el tema de la página y actualiza el texto del botón.</p>
+
+    <h3>HTML</h3>
+<pre class="code"><span class="k">&lt;button</span> <span class="k">id</span>=<span class="k">"btn-modo"</span><span class="k">&gt;</span>Modo noche<span class="k">&lt;/button&gt;</span></pre>
+
+    <h3>CSS</h3>
+<pre class="code">body {
+  background: #fdf6ec;
+  color: #2b2d42;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+body.modo-noche {
+  background: #1a1a2e;
+  color: #f4f1ec;
+}
+body.modo-noche .carta { box-shadow: 0 0 25px rgba(244, 196, 48, 0.3); }</pre>
+
+    <h3>jQuery</h3>
+<pre class="code">$(<span class="k">document</span>).ready(<span class="k">function</span> () {
+
+  $(<span class="k">"#btn-modo"</span>).click(<span class="k">function</span> () {
+    $(<span class="k">"body"</span>).toggleClass(<span class="k">"modo-noche"</span>);
+
+    <span class="k">if</span> ($(<span class="k">"body"</span>).hasClass(<span class="k">"modo-noche"</span>)) {
+      $(<span class="k">this</span>).text(<span class="k">"Modo día"</span>);
+    } <span class="k">else</span> {
+      $(<span class="k">this</span>).text(<span class="k">"Modo noche"</span>);
+    }
+  });
+
+});</pre>
+  </div>
+
+  <div class="doc">
+    <span class="label">Misión 13</span>
+    <h2>Reverso de la carta</h2>
+    <p>Sección oculta con datos secretos que se revela con slideToggle y un botón que cambia su texto según el estado.</p>
+
+    <h3>HTML</h3>
+<pre class="code"><span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"seccion" id</span>=<span class="k">"reverso"</span><span class="k">&gt;</span>
+  <span class="k">&lt;strong&gt;</span>Reverso secreto<span class="k">&lt;/strong&gt;</span>
+  Frase: <span class="k">"Compila o muere intentándolo."</span><span class="k">&lt;br&gt;</span>
+  Comida favorita: Sushi.<span class="k">&lt;br&gt;</span>
+  Canción para programar: Lofi beats infinitos.
+<span class="k">&lt;/div&gt;</span>
+<span class="k">&lt;button</span> <span class="k">id</span>=<span class="k">"btn-reverso"</span><span class="k">&gt;</span>Ver reverso<span class="k">&lt;/button&gt;</span></pre>
+
+    <h3>CSS</h3>
+<pre class="code">#reverso { display: none; }</pre>
+
+    <h3>jQuery</h3>
+<pre class="code">$(<span class="k">document</span>).ready(<span class="k">function</span> () {
+
+  $(<span class="k">"#btn-reverso"</span>).click(<span class="k">function</span> () {
+    $(<span class="k">"#reverso"</span>).slideToggle(400);
+
+    <span class="k">if</span> ($(<span class="k">this</span>).text() === <span class="k">"Ver reverso"</span>) {
+      $(<span class="k">this</span>).text(<span class="k">"Ocultar reverso"</span>);
+    } <span class="k">else</span> {
+      $(<span class="k">this</span>).text(<span class="k">"Ver reverso"</span>);
+    }
+  });
+
+});</pre>
+  </div>
+
+  <div class="doc">
+    <span class="label">Misión 14</span>
+    <h2>Ruleta de poderes secretos</h2>
+    <p>Botón que elige un poder al azar, lo muestra con fade y hace brillar la carta brevemente.</p>
+
+    <h3>HTML</h3>
+<pre class="code"><span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"seccion"</span><span class="k">&gt;</span>
+  <span class="k">&lt;strong&gt;</span>Poder activo<span class="k">&lt;/strong&gt;</span>
+  <span class="k">&lt;div</span> <span class="k">id</span>=<span class="k">"poder"</span><span class="k">&gt;</span>—<span class="k">&lt;/div&gt;</span>
+<span class="k">&lt;/div&gt;</span>
+<span class="k">&lt;button</span> <span class="k">id</span>=<span class="k">"btn-poder"</span><span class="k">&gt;</span>Lanzar poder<span class="k">&lt;/button&gt;</span></pre>
+
+    <h3>CSS</h3>
+<pre class="code">.carta {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.carta.brillo {
+  box-shadow: 0 0 35px gold;
+  transform: scale(1.03);
+}</pre>
+
+    <h3>jQuery</h3>
+<pre class="code">$(<span class="k">document</span>).ready(<span class="k">function</span> () {
+
+  <span class="k">const</span> poderes = [
+    <span class="k">"Inmunidad al lunes"</span>,
+    <span class="k">"Doble café gratis"</span>,
+    <span class="k">"Visión de bug instantánea"</span>,
+    <span class="k">"Compilar sin errores al primer intento"</span>,
+    <span class="k">"Wi-Fi infinito"</span>,
+    <span class="k">"Stack Overflow telepático"</span>
+  ];
+  <span class="k">let</span> ultimo = -1;
+
+  $(<span class="k">"#btn-poder"</span>).click(<span class="k">function</span> () {
+
+    <span class="c">// Sortear sin repetir el anterior</span>
+    <span class="k">let</span> i = Math.floor(Math.random() * poderes.length);
+    <span class="k">while</span> (i === ultimo) {
+      i = Math.floor(Math.random() * poderes.length);
+    }
+    ultimo = i;
+
+    <span class="c">// Cambiar texto con fade</span>
+    $(<span class="k">"#poder"</span>).fadeOut(200, <span class="k">function</span> () {
+      $(<span class="k">this</span>).text(poderes[i]).fadeIn(200);
+    });
+
+    <span class="c">// Brillo temporal en la carta</span>
+    $(<span class="k">".carta"</span>).addClass(<span class="k">"brillo"</span>).delay(500).queue(<span class="k">function</span> (next) {
+      $(<span class="k">this</span>).removeClass(<span class="k">"brillo"</span>);
+      next();
+    });
+  });
+
+});</pre>
+  </div>
+
+  <footer>
+    Soluciones — Retos Extra · Módulo 2 · Lección 07
+  </footer>
+
+</div>
+
+<!-- ===== SCRIPT DEMO EN VIVO ===== -->
+<script>
+$(document).ready(function () {
+
+  // ----- Misión 11: Hobbies -----
+  const hobbies = [
+    { nombre: "Cocinar", descripcion: "Pasta los domingos", horas: 4 },
+    { nombre: "Gaming",  descripcion: "Indie y estrategia",  horas: 6 },
+    { nombre: "Leer",    descripcion: "Ciencia ficción",     horas: 3 },
+    { nombre: "Dibujar", descripcion: "Sketches a lápiz",    horas: 2 }
+  ];
+  let h = Math.floor(Math.random() * hobbies.length);
+  function pintarHobby() {
+    $("#hobby-nombre").text(hobbies[h].nombre);
+    $("#hobby-desc").text(hobbies[h].descripcion);
+    $("#hobby-horas").text("");
+  }
+  pintarHobby();
+
+  $("#btn-hobby").click(function () {
+    $("#hobby-box").fadeOut(200, function () {
+      h = (h + 1) % hobbies.length;
+      pintarHobby();
+      $(this).fadeIn(200);
+    });
+  });
+  $("#hobby-box").dblclick(function () {
+    $("#hobby-horas").text("~" + hobbies[h].horas + " hrs/semana");
+  });
+
+  // ----- Misión 12: Modo Nocturno -----
+  $("#btn-modo").click(function () {
+    $("body").toggleClass("modo-noche");
+    if ($("body").hasClass("modo-noche")) {
+      $(this).text("Modo día");
+    } else {
+      $(this).text("Modo noche");
+    }
+  });
+
+  // ----- Misión 13: Reverso -----
+  $("#btn-reverso").click(function () {
+    $("#reverso").slideToggle(400);
+    if ($(this).text() === "Ver reverso") {
+      $(this).text("Ocultar reverso");
+    } else {
+      $(this).text("Ver reverso");
+    }
+  });
+
+  // ----- Misión 14: Ruleta de poderes -----
+  const poderes = [
+    "Inmunidad al lunes",
+    "Doble café gratis",
+    "Visión de bug instantánea",
+    "Compilar sin errores al primer intento",
+    "Wi-Fi infinito",
+    "Stack Overflow telepático"
+  ];
+  let ultimo = -1;
+  $("#btn-poder").click(function () {
+    let i = Math.floor(Math.random() * poderes.length);
+    while (i === ultimo) {
+      i = Math.floor(Math.random() * poderes.length);
+    }
+    ultimo = i;
+    $("#poder").fadeOut(200, function () {
+      $(this).text(poderes[i]).fadeIn(200);
+    });
+    $(".carta").addClass("brillo").delay(500).queue(function (next) {
+      $(this).removeClass("brillo");
+      next();
+    });
+  });
+
+});
+</script>
+
+</body>
+</html>
