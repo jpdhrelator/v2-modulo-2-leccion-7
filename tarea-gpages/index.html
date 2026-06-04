@@ -507,34 +507,6 @@ git push</pre>
         <li>Agregar un botón <em>"Otro hobby"</em> que cambie al siguiente hobby de la lista con un efecto <code>fadeOut</code> seguido de <code>fadeIn</code>.</li>
         <li>Al hacer doble clic sobre un hobby, debe aparecer un texto con cuántas horas semanales le dedicas (puedes inventarlo).</li>
       </ul>
-<pre class="cmd"><span class="c">// Estructura sugerida</span>
-$(document).ready(function () {
-  const hobbies = [
-    { nombre: "Cocinar", descripcion: "Pasta los domingos", horas: 4 },
-    { nombre: "Gaming",  descripcion: "Indie y estrategia",  horas: 6 },
-    { nombre: "Leer",    descripcion: "Ciencia ficción",     horas: 3 }
-  ];
-  let i = Math.floor(Math.random() * hobbies.length);
-
-  function pintar() {
-    $("#hobby-nombre").text(hobbies[i].nombre);
-    $("#hobby-desc").text(hobbies[i].descripcion);
-    $("#hobby-horas").text("");
-  }
-  pintar();
-
-  $("#btn-hobby").click(function () {
-    $("#hobby-box").fadeOut(200, function () {
-      i = (i + 1) % hobbies.length;
-      pintar();
-      $(this).fadeIn(200);
-    });
-  });
-
-  $("#hobby-box").dblclick(function () {
-    $("#hobby-horas").text("~" + hobbies[i].horas + " hrs/semana");
-  });
-});</pre>
       <div class="check"><strong>Verificación:</strong> al recargar la página aparece un hobby al azar, el botón cambia entre ellos con fade, y el doble clic muestra las horas semanales.</div>
     </div>
   </section>
@@ -542,32 +514,51 @@ $(document).ready(function () {
   <section class="bonus">
     <div class="mission-head"><div class="mission-num">12</div><div class="mission-title">Modo Nocturno con interruptor</div></div>
     <div class="mission-body">
-      <p>Agrega a tu carta un pequeño interruptor (un botón o un <code>input</code> tipo <em>checkbox</em> estilizado) que active y desactive un <strong>modo nocturno</strong> para toda la página.</p>
+      <p>Agrega a tu carta un botón que active y desactive un <strong>modo nocturno</strong> para toda la página.</p>
       <ul>
         <li>En CSS, define una clase <code>.modo-noche</code> en el <code>body</code> que cambie el fondo a un tono oscuro, el color del texto a uno claro y ajuste el brillo de la carta.</li>
-        <li>Con jQuery, alterna esa clase al hacer clic en el interruptor usando <code>.toggleClass()</code>.</li>
+        <li>Con jQuery, alterna esa clase al hacer clic en el botón usando <code>.toggleClass()</code>.</li>
         <li>El texto del botón debe cambiar entre <em>"Modo noche"</em> y <em>"Modo día"</em> según el estado actual.</li>
-        <li><strong>Reto extra:</strong> recordar la preferencia del usuario en <code>localStorage</code> para que al recargar la página se mantenga el modo elegido.</li>
       </ul>
-<pre class="cmd"><span class="c">// Modo nocturno con persistencia</span>
-$(document).ready(function () {
-
-  <span class="c">// Restaurar preferencia previa</span>
-  if (localStorage.getItem("modo") === "noche") {
-    $("body").addClass("modo-noche");
-    $("#btn-modo").text("Modo día");
-  }
-
-  $("#btn-modo").click(function () {
-    $("body").toggleClass("modo-noche");
-    const esNoche = $("body").hasClass("modo-noche");
-
-    $(this).text(esNoche ? "Modo día" : "Modo noche");
-    localStorage.setItem("modo", esNoche ? "noche" : "dia");
-  });
-});</pre>
-      <div class="check"><strong>Verificación:</strong> el botón alterna entre modo día y noche, el texto cambia según el estado, y si recargas la página el modo elegido se mantiene.</div>
+      <div class="check"><strong>Verificación:</strong> el botón alterna entre modo día y noche, y el texto del botón cambia según el estado.</div>
       <p class="hint">Recuerda hacer <code>git add</code>, <code>git commit -m "feat: modo nocturno"</code> y <code>git push</code>. Espera unos segundos y revisa que el cambio aparece en tu URL de GitHub Pages.</p>
+    </div>
+  </section>
+
+  <section class="bonus">
+    <div class="mission-head"><div class="mission-num">13</div><div class="mission-title">Voltea la carta y muestra el reverso</div></div>
+    <div class="mission-body">
+      <p>Las cartas coleccionables suelen tener un <strong>reverso</strong> con datos secretos. Agrega a tu carta una sección oculta que muestre, al pulsar un botón, información extra sobre ti:</p>
+      <ul>
+        <li>Una frase favorita o lema personal.</li>
+        <li>Tu comida favorita.</li>
+        <li>Tu canción para programar.</li>
+        <li>Un dato curioso que pocos sepan.</li>
+      </ul>
+      <p>El reto en jQuery:</p>
+      <ul>
+        <li>El reverso debe estar oculto al inicio (<code>display: none</code> en CSS).</li>
+        <li>Un botón <em>"Ver reverso"</em> debe revelarlo con un efecto suave usando <code>slideToggle()</code> o <code>fadeToggle()</code>.</li>
+        <li>El texto del botón debe cambiar entre <em>"Ver reverso"</em> y <em>"Ocultar reverso"</em>.</li>
+      </ul>
+      <div class="check"><strong>Verificación:</strong> al pulsar el botón, el reverso aparece deslizándose con suavidad y el texto del botón cambia. Al volver a pulsarlo, se oculta.</div>
+    </div>
+  </section>
+
+  <section class="bonus">
+    <div class="mission-head"><div class="mission-num">14</div><div class="mission-title">Ruleta de poderes secretos</div></div>
+    <div class="mission-body">
+      <p>Tu carta gana un segundo botón <em>"Lanzar poder"</em> que invoca un poder secreto al azar de una lista de 5 o más.</p>
+      <p>El reto en jQuery:</p>
+      <ul>
+        <li>Define un array con al menos 5 poderes inventados (ej: <em>"Inmunidad al lunes"</em>, <em>"Doble café gratis"</em>, <em>"Visión de bug instantánea"</em>...).</li>
+        <li>Cada clic en el botón debe elegir uno al azar y mostrarlo en un <code>div</code> dedicado.</li>
+        <li>El cambio debe verse con un efecto: usa <code>fadeOut</code>, cambia el texto y luego <code>fadeIn</code>.</li>
+        <li>Si tu última activación coincide con la nueva, debe volver a sortearse (no debe repetirse seguido).</li>
+        <li>El botón debe agregar la clase <code>.brillo</code> a la carta durante medio segundo para celebrar (usa <code>addClass</code> y <code>setTimeout</code> con <code>removeClass</code>, o <code>delay()</code> de jQuery).</li>
+      </ul>
+      <p class="hint">Para el efecto visual, define en tu CSS la clase <code>.brillo</code> con algo como <code>box-shadow: 0 0 30px gold;</code> o una transformación de escala.</p>
+      <div class="check"><strong>Verificación:</strong> al pulsar el botón aparece un poder distinto al anterior con animación suave, y la carta brilla por un instante.</div>
     </div>
   </section>
 
