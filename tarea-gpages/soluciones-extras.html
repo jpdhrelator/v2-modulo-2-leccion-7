@@ -82,23 +82,53 @@
     .demo-wrap { grid-template-columns: 1fr; }
   }
 
-  /* CARTA — Misiones base + bonus */
-  .carta {
+  /* WRAPPER 3D para flip — Misión 13 */
+  .carta-wrap {
     width: 100%;
     max-width: 320px;
+    margin: 0 auto;
+    perspective: 1200px;
+  }
+  .carta-inner {
+    position: relative;
+    width: 100%;
+    min-height: 720px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+  .carta-inner.volteada { transform: rotateY(180deg); }
+
+  /* CARTA — caras frontal y posterior */
+  .carta {
     background: linear-gradient(160deg, #1a1a2e, #2a2a4a);
     color: #fff;
     border-radius: 18px;
-    padding: 22px;
+    padding: 18px;
     border: 3px solid var(--gold);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin: 0 auto;
+    transition: box-shadow 0.3s ease;
   }
-  .carta:hover { transform: translateY(-8px); }
-  .carta.brillo {
+  .carta.frente,
+  .carta.reverso {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .carta.reverso {
+    transform: rotateY(180deg);
+    background: linear-gradient(160deg, #2a2a4a, #1a1a2e);
+  }
+  .carta-inner:hover { transform: translateY(-8px); }
+  .carta-inner.volteada:hover { transform: rotateY(180deg) translateY(-8px); }
+  .carta-inner.brillo .carta {
     box-shadow: 0 0 35px var(--gold), 0 10px 30px rgba(0, 0, 0, 0.25);
-    transform: scale(1.03);
   }
   .carta h2 {
     font-family: Georgia, serif;
@@ -113,9 +143,9 @@
     margin-bottom: 14px;
   }
   .carta .avatar {
-    width: 110px;
-    height: 110px;
-    margin: 0 auto 14px;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
     border-radius: 50%;
     background: rgba(255,255,255,0.1);
     display: flex;
@@ -123,10 +153,10 @@
     justify-content: center;
     border: 2px solid var(--gold);
   }
-  .carta .avatar svg { width: 90px; height: 90px; }
+  .carta .avatar svg { width: 64px; height: 64px; }
   .carta .stat {
-    font-size: 12px;
-    margin-bottom: 8px;
+    font-size: 11.5px;
+    margin-bottom: 6px;
   }
   .carta .stat-name { display: flex; justify-content: space-between; margin-bottom: 3px; }
   .carta .bar {
@@ -141,10 +171,11 @@
     border-radius: 4px;
   }
   .carta .seccion {
-    margin-top: 14px;
-    padding-top: 12px;
+    margin-top: 10px;
+    padding-top: 8px;
     border-top: 1px dashed rgba(255,255,255,0.2);
-    font-size: 13px;
+    font-size: 12.5px;
+    line-height: 1.4;
   }
   .carta .seccion strong {
     color: var(--gold);
@@ -156,8 +187,8 @@
   }
   .carta .rareza {
     text-align: center;
-    margin-top: 14px;
-    padding: 6px;
+    margin-top: 10px;
+    padding: 5px;
     background: rgba(244, 196, 48, 0.15);
     color: var(--gold);
     border-radius: 8px;
@@ -169,24 +200,24 @@
   .acciones {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 14px;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
   }
   .carta button {
     background: var(--gold);
     color: #1a1a2e;
     border: none;
-    padding: 10px 14px;
+    padding: 9px 12px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 11.5px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     cursor: pointer;
     transition: transform 0.15s ease, background 0.2s ease;
   }
   .carta button:hover { background: #fff; transform: translateY(-1px); }
-  #reverso { display: none; }
   #poder {
     text-align: center;
     font-style: italic;
@@ -298,64 +329,91 @@
   <!-- DEMO EN VIVO -->
   <div class="demo-wrap">
 
-    <div class="carta">
-      <h2>Devmaster</h2>
-      <div class="clase">Fullstack · Rareza Legendaria</div>
-      <div class="avatar">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="45" fill="#f4c430"/>
-          <rect x="28" y="38" width="14" height="14" rx="3" fill="#1a1a2e"/>
-          <rect x="58" y="38" width="14" height="14" rx="3" fill="#1a1a2e"/>
-          <path d="M30 70 Q50 82, 70 70" stroke="#1a1a2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
+    <div class="carta-wrap">
+      <div class="carta-inner">
 
-      <div class="stat">
-        <div class="stat-name"><span>HTML</span><span>92</span></div>
-        <div class="bar"><div style="width:92%"></div></div>
-      </div>
-      <div class="stat">
-        <div class="stat-name"><span>CSS</span><span>85</span></div>
-        <div class="bar"><div style="width:85%"></div></div>
-      </div>
-      <div class="stat">
-        <div class="stat-name"><span>jQuery</span><span>78</span></div>
-        <div class="bar"><div style="width:78%"></div></div>
-      </div>
+        <!-- ===== FRENTE ===== -->
+        <div class="carta frente">
+          <h2>Devmaster</h2>
+          <div class="clase">Fullstack · Rareza Legendaria</div>
+          <div class="avatar">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" fill="#f4c430"/>
+              <rect x="28" y="38" width="14" height="14" rx="3" fill="#1a1a2e"/>
+              <rect x="58" y="38" width="14" height="14" rx="3" fill="#1a1a2e"/>
+              <path d="M30 70 Q50 82, 70 70" stroke="#1a1a2e" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
 
-      <div class="seccion">
-        <strong>Habilidad especial</strong>
-        Refactor relámpago en cualquier código heredado.
-      </div>
+          <div class="stat">
+            <div class="stat-name"><span>HTML</span><span>92</span></div>
+            <div class="bar"><div style="width:92%"></div></div>
+          </div>
+          <div class="stat">
+            <div class="stat-name"><span>CSS</span><span>85</span></div>
+            <div class="bar"><div style="width:85%"></div></div>
+          </div>
+          <div class="stat">
+            <div class="stat-name"><span>jQuery</span><span>78</span></div>
+            <div class="bar"><div style="width:78%"></div></div>
+          </div>
 
-      <!-- Hobby — Misión 11 -->
-      <div class="seccion" id="hobby-box">
-        <strong>Hobby al azar</strong>
-        <span id="hobby-nombre"></span> — <span id="hobby-desc"></span>
-        <span id="hobby-horas"></span>
-      </div>
+          <div class="seccion">
+            <strong>Habilidad especial</strong>
+            Refactor relámpago en cualquier código heredado.
+          </div>
 
-      <!-- Poder — Misión 14 -->
-      <div class="seccion">
-        <strong>Poder activo</strong>
-        <div id="poder">—</div>
-      </div>
+          <!-- Hobby — Misión 11 -->
+          <div class="seccion" id="hobby-box">
+            <strong>Hobby al azar</strong>
+            <span id="hobby-nombre"></span> — <span id="hobby-desc"></span>
+            <span id="hobby-horas"></span>
+          </div>
 
-      <!-- Reverso — Misión 13 -->
-      <div class="seccion" id="reverso">
-        <strong>Reverso secreto</strong>
-        Frase: "Compila o muere intentándolo."<br>
-        Comida favorita: Sushi.<br>
-        Canción para programar: Lofi beats infinitos.<br>
-        Dato curioso: Aprendió a programar con un Tamagotchi.
-      </div>
+          <!-- Poder — Misión 14 -->
+          <div class="seccion">
+            <strong>Poder activo</strong>
+            <div id="poder">—</div>
+          </div>
 
-      <div class="rareza">★ Legendaria</div>
+          <div class="rareza">★ Legendaria</div>
 
-      <div class="acciones">
-        <button id="btn-hobby">Otro hobby</button>
-        <button id="btn-reverso">Ver reverso</button>
-        <button id="btn-poder">Lanzar poder</button>
+          <div class="acciones">
+            <button id="btn-hobby">Otro hobby</button>
+            <button class="btn-flip">Ver reverso</button>
+            <button id="btn-poder">Lanzar poder</button>
+          </div>
+        </div>
+
+        <!-- ===== REVERSO ===== -->
+        <div class="carta reverso">
+          <h2>Reverso secreto</h2>
+          <div class="clase">Datos clasificados</div>
+
+          <div class="seccion">
+            <strong>Frase</strong>
+            "Compila o muere intentándolo."
+          </div>
+          <div class="seccion">
+            <strong>Comida favorita</strong>
+            Sushi sin pausa.
+          </div>
+          <div class="seccion">
+            <strong>Soundtrack</strong>
+            Lofi beats infinitos.
+          </div>
+          <div class="seccion">
+            <strong>Dato curioso</strong>
+            Aprendió a programar con un Tamagotchi.
+          </div>
+
+          <div class="rareza">Documento clasificado</div>
+
+          <div class="acciones">
+            <button class="btn-flip">Volver al frente</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -456,35 +514,68 @@ body.modo-noche .carta { box-shadow: 0 0 25px rgba(244, 196, 48, 0.3); }</pre>
 
   <div class="doc">
     <span class="label">Misión 13</span>
-    <h2>Reverso de la carta</h2>
-    <p>Sección oculta con datos secretos que se revela con slideToggle y un botón que cambia su texto según el estado.</p>
+    <h2>Voltea la carta (flip 3D real)</h2>
+    <p>La carta gira en 3D mostrando su reverso con datos secretos. Se logra con <code>perspective</code>, <code>transform-style: preserve-3d</code> y <code>backface-visibility: hidden</code>. jQuery solo alterna una clase.</p>
 
     <h3>HTML</h3>
-<pre class="code"><span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"seccion" id</span>=<span class="k">"reverso"</span><span class="k">&gt;</span>
-  <span class="k">&lt;strong&gt;</span>Reverso secreto<span class="k">&lt;/strong&gt;</span>
-  Frase: <span class="k">"Compila o muere intentándolo."</span><span class="k">&lt;br&gt;</span>
-  Comida favorita: Sushi.<span class="k">&lt;br&gt;</span>
-  Canción para programar: Lofi beats infinitos.
-<span class="k">&lt;/div&gt;</span>
-<span class="k">&lt;button</span> <span class="k">id</span>=<span class="k">"btn-reverso"</span><span class="k">&gt;</span>Ver reverso<span class="k">&lt;/button&gt;</span></pre>
+<pre class="code"><span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"carta-wrap"</span><span class="k">&gt;</span>
+  <span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"carta-inner"</span><span class="k">&gt;</span>
+
+    <span class="c">&lt;!-- FRENTE --&gt;</span>
+    <span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"carta frente"</span><span class="k">&gt;</span>
+      ...contenido principal de la carta...
+      <span class="k">&lt;button</span> <span class="k">class</span>=<span class="k">"btn-flip"</span><span class="k">&gt;</span>Ver reverso<span class="k">&lt;/button&gt;</span>
+    <span class="k">&lt;/div&gt;</span>
+
+    <span class="c">&lt;!-- REVERSO --&gt;</span>
+    <span class="k">&lt;div</span> <span class="k">class</span>=<span class="k">"carta reverso"</span><span class="k">&gt;</span>
+      <span class="k">&lt;h2&gt;</span>Reverso secreto<span class="k">&lt;/h2&gt;</span>
+      ...datos secretos...
+      <span class="k">&lt;button</span> <span class="k">class</span>=<span class="k">"btn-flip"</span><span class="k">&gt;</span>Volver al frente<span class="k">&lt;/button&gt;</span>
+    <span class="k">&lt;/div&gt;</span>
+
+  <span class="k">&lt;/div&gt;</span>
+<span class="k">&lt;/div&gt;</span></pre>
 
     <h3>CSS</h3>
-<pre class="code">#reverso { display: none; }</pre>
+<pre class="code"><span class="c">/* Wrapper con perspectiva */</span>
+.carta-wrap {
+  width: 320px;
+  perspective: 1200px;
+}
+
+<span class="c">/* Contenedor 3D que rota */</span>
+.carta-inner {
+  position: relative;
+  width: 100%;
+  min-height: 540px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.carta-inner.volteada { transform: rotateY(180deg); }
+
+<span class="c">/* Las dos caras ocupan el mismo espacio */</span>
+.carta.frente,
+.carta.reverso {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+<span class="c">/* El reverso ya nace girado 180° */</span>
+.carta.reverso { transform: rotateY(180deg); }</pre>
 
     <h3>jQuery</h3>
 <pre class="code">$(<span class="k">document</span>).ready(<span class="k">function</span> () {
 
-  $(<span class="k">"#btn-reverso"</span>).click(<span class="k">function</span> () {
-    $(<span class="k">"#reverso"</span>).slideToggle(400);
-
-    <span class="k">if</span> ($(<span class="k">this</span>).text() === <span class="k">"Ver reverso"</span>) {
-      $(<span class="k">this</span>).text(<span class="k">"Ocultar reverso"</span>);
-    } <span class="k">else</span> {
-      $(<span class="k">this</span>).text(<span class="k">"Ver reverso"</span>);
-    }
+  <span class="c">// Cualquier botón con clase .btn-flip voltea la carta</span>
+  $(<span class="k">".btn-flip"</span>).click(<span class="k">function</span> () {
+    $(<span class="k">".carta-inner"</span>).toggleClass(<span class="k">"volteada"</span>);
   });
 
 });</pre>
+    <p style="margin-top:14px"><strong>Clave didáctica:</strong> el botón se duplica en ambas caras (frente y reverso) con la misma clase. Como ambos llaman al mismo handler, el flip funciona en cualquier dirección.</p>
   </div>
 
   <div class="doc">
@@ -536,7 +627,7 @@ body.modo-noche .carta { box-shadow: 0 0 25px rgba(244, 196, 48, 0.3); }</pre>
     });
 
     <span class="c">// Brillo temporal en la carta</span>
-    $(<span class="k">".carta"</span>).addClass(<span class="k">"brillo"</span>).delay(500).queue(<span class="k">function</span> (next) {
+    $(<span class="k">".carta-inner"</span>).addClass(<span class="k">"brillo"</span>).delay(500).queue(<span class="k">function</span> (next) {
       $(<span class="k">this</span>).removeClass(<span class="k">"brillo"</span>);
       next();
     });
@@ -591,14 +682,9 @@ $(document).ready(function () {
     }
   });
 
-  // ----- Misión 13: Reverso -----
-  $("#btn-reverso").click(function () {
-    $("#reverso").slideToggle(400);
-    if ($(this).text() === "Ver reverso") {
-      $(this).text("Ocultar reverso");
-    } else {
-      $(this).text("Ver reverso");
-    }
+  // ----- Misión 13: Voltea la carta -----
+  $(".btn-flip").click(function () {
+    $(".carta-inner").toggleClass("volteada");
   });
 
   // ----- Misión 14: Ruleta de poderes -----
@@ -620,7 +706,7 @@ $(document).ready(function () {
     $("#poder").fadeOut(200, function () {
       $(this).text(poderes[i]).fadeIn(200);
     });
-    $(".carta").addClass("brillo").delay(500).queue(function (next) {
+    $(".carta-inner").addClass("brillo").delay(500).queue(function (next) {
       $(this).removeClass("brillo");
       next();
     });
