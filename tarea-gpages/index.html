@@ -198,7 +198,57 @@
     font-style: italic;
   }
   .hint::before { content: "Pista: "; font-weight: 700; color: var(--warning); font-style: normal; }
-  footer {
+  .bonus-banner {
+    margin: 40px 0 22px;
+    background: linear-gradient(135deg, #f8c471, #e67e22);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(230, 126, 34, 0.25);
+  }
+  .bonus-banner .label {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .bonus-banner h2 {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+  .bonus-banner p { font-size: 14.5px; opacity: 0.95; }
+  section.bonus {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    border-left: 4px solid #e67e22;
+  }
+  section.bonus::before {
+    content: "BONUS";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #e67e22;
+    color: white;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 999px;
+  }
+  section.bonus .mission-num { color: #e67e22; }
+    footer {
     margin-top: 50px;
     padding-top: 24px;
     border-top: 1px solid var(--border);
@@ -438,6 +488,86 @@ git push</pre>
     <div class="mission-body">
       <p>Copia la URL pública de tu sitio (<code>https://&lt;tu-usuario&gt;.github.io/mi-carta-dev/</code>) y compártela en el canal del curso. Revisa al menos 2 cartas de tus compañeros y deja un comentario sobre cuál habilidad te gustó más.</p>
       <div class="check"><strong>Verificación:</strong> tu URL está publicada en el canal del curso y has comentado al menos 2 cartas de compañeros.</div>
+    </div>
+  </section>
+
+  <div class="bonus-banner">
+    <span class="label">¿Terminaste antes?</span>
+    <h2>Retos extra para coders veloces</h2>
+    <p>Si tu carta ya está publicada y funcionando, súmate a estos desafíos opcionales. Cada uno se commitea y se sube por separado para que veas tus cambios en vivo en GitHub Pages.</p>
+  </div>
+
+  <section class="bonus">
+    <div class="mission-head"><div class="mission-num">11</div><div class="mission-title">Sección de Hobbies con jQuery dinámico</div></div>
+    <div class="mission-body">
+      <p>Agrega a tu carta una nueva sección llamada <strong>"Hobbies fuera del código"</strong> donde muestres 3 o más pasatiempos tuyos (cocinar, gaming, dibujar, deporte, música, leer, etc.). Cada hobby debe tener un nombre y una pequeña descripción.</p>
+      <p>El reto en jQuery:</p>
+      <ul>
+        <li>Al cargar la página, mostrar <strong>solo uno</strong> de los hobbies al azar.</li>
+        <li>Agregar un botón <em>"Otro hobby"</em> que cambie al siguiente hobby de la lista con un efecto <code>fadeOut</code> seguido de <code>fadeIn</code>.</li>
+        <li>Al hacer doble clic sobre un hobby, debe aparecer un texto con cuántas horas semanales le dedicas (puedes inventarlo).</li>
+      </ul>
+<pre class="cmd"><span class="c">// Estructura sugerida</span>
+$(document).ready(function () {
+  const hobbies = [
+    { nombre: "Cocinar", descripcion: "Pasta los domingos", horas: 4 },
+    { nombre: "Gaming",  descripcion: "Indie y estrategia",  horas: 6 },
+    { nombre: "Leer",    descripcion: "Ciencia ficción",     horas: 3 }
+  ];
+  let i = Math.floor(Math.random() * hobbies.length);
+
+  function pintar() {
+    $("#hobby-nombre").text(hobbies[i].nombre);
+    $("#hobby-desc").text(hobbies[i].descripcion);
+    $("#hobby-horas").text("");
+  }
+  pintar();
+
+  $("#btn-hobby").click(function () {
+    $("#hobby-box").fadeOut(200, function () {
+      i = (i + 1) % hobbies.length;
+      pintar();
+      $(this).fadeIn(200);
+    });
+  });
+
+  $("#hobby-box").dblclick(function () {
+    $("#hobby-horas").text("~" + hobbies[i].horas + " hrs/semana");
+  });
+});</pre>
+      <div class="check"><strong>Verificación:</strong> al recargar la página aparece un hobby al azar, el botón cambia entre ellos con fade, y el doble clic muestra las horas semanales.</div>
+    </div>
+  </section>
+
+  <section class="bonus">
+    <div class="mission-head"><div class="mission-num">12</div><div class="mission-title">Modo Nocturno con interruptor</div></div>
+    <div class="mission-body">
+      <p>Agrega a tu carta un pequeño interruptor (un botón o un <code>input</code> tipo <em>checkbox</em> estilizado) que active y desactive un <strong>modo nocturno</strong> para toda la página.</p>
+      <ul>
+        <li>En CSS, define una clase <code>.modo-noche</code> en el <code>body</code> que cambie el fondo a un tono oscuro, el color del texto a uno claro y ajuste el brillo de la carta.</li>
+        <li>Con jQuery, alterna esa clase al hacer clic en el interruptor usando <code>.toggleClass()</code>.</li>
+        <li>El texto del botón debe cambiar entre <em>"Modo noche"</em> y <em>"Modo día"</em> según el estado actual.</li>
+        <li><strong>Reto extra:</strong> recordar la preferencia del usuario en <code>localStorage</code> para que al recargar la página se mantenga el modo elegido.</li>
+      </ul>
+<pre class="cmd"><span class="c">// Modo nocturno con persistencia</span>
+$(document).ready(function () {
+
+  <span class="c">// Restaurar preferencia previa</span>
+  if (localStorage.getItem("modo") === "noche") {
+    $("body").addClass("modo-noche");
+    $("#btn-modo").text("Modo día");
+  }
+
+  $("#btn-modo").click(function () {
+    $("body").toggleClass("modo-noche");
+    const esNoche = $("body").hasClass("modo-noche");
+
+    $(this).text(esNoche ? "Modo día" : "Modo noche");
+    localStorage.setItem("modo", esNoche ? "noche" : "dia");
+  });
+});</pre>
+      <div class="check"><strong>Verificación:</strong> el botón alterna entre modo día y noche, el texto cambia según el estado, y si recargas la página el modo elegido se mantiene.</div>
+      <p class="hint">Recuerda hacer <code>git add</code>, <code>git commit -m "feat: modo nocturno"</code> y <code>git push</code>. Espera unos segundos y revisa que el cambio aparece en tu URL de GitHub Pages.</p>
     </div>
   </section>
 
